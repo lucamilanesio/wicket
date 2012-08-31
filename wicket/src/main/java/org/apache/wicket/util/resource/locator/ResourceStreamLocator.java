@@ -179,7 +179,7 @@ public class ResourceStreamLocator implements IResourceStreamLocator
 
 		// use context classloader when no specific classloader is set
 		// (package resources for instance)
-		resourceStream = getResourceStream(Thread.currentThread().getContextClassLoader(), path);
+		resourceStream = getResourceStream(getClass().getClassLoader(), path);
 		if (resourceStream != null)
 		{
 			return resourceStream;
