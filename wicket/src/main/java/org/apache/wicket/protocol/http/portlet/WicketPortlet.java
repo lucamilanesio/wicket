@@ -356,8 +356,7 @@ public class WicketPortlet extends GenericPortlet
 		{
 			properties = new Properties();
 		}
-		InputStream is = Thread.currentThread()
-			.getContextClassLoader()
+		InputStream is = getClass().getClassLoader()
 			.getResourceAsStream(WICKET_PORTLET_PROPERTIES);
 		if (is != null)
 		{

@@ -284,7 +284,7 @@ public class ReloadingClassLoader extends URLClassLoader
 					// Will throw a CFNE if not found in parent
 					// see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6500212
 					// clazz = parent.loadClass(name);
-					clazz = Class.forName(name, false, parent);
+					clazz = Class.forName(name);
 				}
 			}
 		}

@@ -60,11 +60,7 @@ public class ContextParamWebApplicationFactory implements IWebApplicationFactory
 	{
 		try
 		{
-			ClassLoader loader = Thread.currentThread().getContextClassLoader();
-			if (loader == null)
-			{
-				loader = getClass().getClassLoader();
-			}
+		    ClassLoader	loader = getClass().getClassLoader();
 
 			// see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6500212
 			// final Class<?> applicationClass = loader.loadClass(applicationClassName);

@@ -103,15 +103,9 @@ public final class DefaultClassResolver implements IClassResolver
 			{
 				synchronized (classes)
 				{
-					ClassLoader loader = Thread.currentThread().getContextClassLoader();
-					if (loader == null)
-					{
-						loader = DefaultClassResolver.class.getClassLoader();
-					}
-
 					// see http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6500212
 					// clazz = loader.loadClass(classname);
-					clazz = Class.forName(classname, false, loader);
+				    clazz = Class.forName(classname);
 				}
 				classes.put(classname, new WeakReference<Class<?>>(clazz));
 			}
@@ -129,15 +123,15 @@ public final class DefaultClassResolver implements IClassResolver
 		try
 		{
 			// Try the classloader for the wicket jar/bundle
-			Enumeration<URL> resources = Application.class.getClassLoader().getResources(name);
+			Enumeration<URL> resources = getClass().getClassLoader().getResources(name);
 			loadResources(resources, loadedFiles);
 
 			// Try the classloader for the user's application jar/bundle
-			resources = Application.get().getClass().getClassLoader().getResources(name);
+			resources = getClass().getClassLoader().getResources(name);
 			loadResources(resources, loadedFiles);
 
 			// Try the context class loader
-			resources = Thread.currentThread().getContextClassLoader().getResources(name);
+			resources = getClass().getClassLoader().getResources(name);
 			loadResources(resources, loadedFiles);
 		}
 		catch (IOException e)

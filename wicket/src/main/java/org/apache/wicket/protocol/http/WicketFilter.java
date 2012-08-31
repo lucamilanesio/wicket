@@ -409,15 +409,10 @@ public class WicketFilter implements Filter
 			return true;
 		}
 
-		final ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
+		final ClassLoader previousClassLoader = getClassLoader();
 		final ClassLoader newClassLoader = getClassLoader();
 		try
 		{
-			if (previousClassLoader != newClassLoader)
-			{
-				Thread.currentThread().setContextClassLoader(newClassLoader);
-			}
-
 			checkCharacterEncoding(servletRequest);
 
 			// Create a new webrequest to wrap the request
@@ -662,15 +657,8 @@ public class WicketFilter implements Filter
 			servletMode = true;
 		}
 
-		final ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
-		final ClassLoader newClassLoader = getClassLoader();
 		try
 		{
-			if (previousClassLoader != newClassLoader)
-			{
-				Thread.currentThread().setContextClassLoader(newClassLoader);
-			}
-
 			// Try to configure filterPath from web.xml if it's not specified as
 			// an init-param.
 			if (filterMapping == null)
@@ -751,11 +739,6 @@ public class WicketFilter implements Filter
 		finally
 		{
 			Application.unset();
-			// restore the class loader if it was replaced
-			if (newClassLoader != previousClassLoader)
-			{
-				Thread.currentThread().setContextClassLoader(previousClassLoader);
-			}
 		}
 	}
 
@@ -1045,7 +1028,7 @@ public class WicketFilter implements Filter
 				// .getContextClassLoader()
 				// .loadClass(appFactoryClassName);
 				final Class<?> factoryClass = Class.forName(appFactoryClassName, false,
-					Thread.currentThread().getContextClassLoader());
+					getClassLoader());
 
 				// Instantiate the factory
 				return (IWebApplicationFactory)factoryClass.newInstance();
@@ -1079,7 +1062,7 @@ public class WicketFilter implements Filter
 	 */
 	protected ClassLoader getClassLoader()
 	{
-		return Thread.currentThread().getContextClassLoader();
+		return getClass().getClassLoader();
 	}
 
 	protected String getFilterPath(HttpServletRequest request)
